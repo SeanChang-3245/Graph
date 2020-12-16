@@ -68,7 +68,30 @@ class graph
     void greedy_cp(int remain_time);
 };
 
+/*
+graph::graph(vector<int>& nodes)
+{
+    srand(time(NULL));
+    int rcost = rand() % 100 + 1;
+    edge tmp;
+    Node* p;
+    Node* CurrnentNode = this->root;
 
+    for(int i : nodes)
+    {
+        p = new Node(i);
+        tmp.target = p;
+        tmp.cost = rcost;
+
+        this->root->path.push_back(tmp);
+    }
+
+    for(edge i : this->root->path)
+    {
+
+    }
+
+}*/
 
 
 void graph::brute(int remain_time)

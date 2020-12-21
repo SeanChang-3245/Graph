@@ -27,31 +27,42 @@ struct edge
 
 class graph
 {
+public:
+
     Node* root;
     vector<int> ans;
 
-    graph(vector<int> nodes)
+    graph(vector<int> nodes_money)
     {
         srand(time(NULL));
-        int cost = rand() % 100 + 1;
+        int rcost = rand() % 100 + 1;
         Node* p;
         edge tmp;
 
-        for (int i : nodes)
+        for (int i : nodes_money)
         {
             p = new Node(i);
             tmp.target = p;
-            tmp.cost = cost;
+            tmp.cost = rcost;
 
             this->root->path.push_back(tmp);
 
-            cost = rand() % 100 + 1;
+            rcost = rand() % 100 + 1;
         }
 
-        
+        for (int i = 0; i < this->root->path.size()-1; i++)
+        {
+            for (int j = i + 1; j < this->root->path.size(); j++)
+            {
+                tmp.target = this->root->path[j].target;
+                tmp.cost = rcost;
+                this->root->path[i].target->path.push_back(tmp);
 
+                tmp.target = this->root->path[i].target;
+                this->root->path[j].target->path.push_back(tmp);
 
-
+            }
+        }
     }
 
 

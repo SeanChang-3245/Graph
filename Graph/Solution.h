@@ -1,25 +1,31 @@
 #pragma once
 
 #include <bits/stdc++.h>
+
+#define endl "\n"
+
 using namespace std;
 
-struct edge;
-struct Node;
+class edge;
+class Node;
+class graph;
 
-struct Node
+class Node
 {
+public:
     bool used = false;
-    int money;
+    int money=0;
     vector<edge> path;
 
     Node(int m)
     {
-        this->money = m;
+        this->money = m; 
     }
 };
 
-struct edge
+class edge
 {
+public:
     int cost;
     Node* target;
 };
@@ -28,24 +34,25 @@ struct edge
 class graph
 {
 public:
-
-    Node* root;
+    Node* root = new Node(0);
     vector<int> ans;
 
-    graph(vector<int> nodes_money)
+    graph(vector<int> &nodes_money)
     {
         srand(time(NULL));
         int rcost = rand() % 100 + 1;
-        Node* p;
-        edge tmp;
+        Node* p = nullptr;
+
 
         for (int i : nodes_money)
         {
             p = new Node(i);
+            edge tmp;
             tmp.target = p;
             tmp.cost = rcost;
 
-            this->root->path.push_back(tmp);
+            (this->root)->path.push_back(tmp);
+            //this->testvec.push_back(tmp);
 
             rcost = rand() % 100 + 1;
         }
@@ -54,6 +61,7 @@ public:
         {
             for (int j = i + 1; j < this->root->path.size(); j++)
             {
+                edge tmp;
                 tmp.target = this->root->path[j].target;
                 tmp.cost = rcost;
                 this->root->path[i].target->path.push_back(tmp);
@@ -61,6 +69,7 @@ public:
                 tmp.target = this->root->path[i].target;
                 this->root->path[j].target->path.push_back(tmp);
 
+                rcost = rand() % 100 + 1;
             }
         }
     }
@@ -142,8 +151,7 @@ void graph::greedy_cost(int remain_time)
     int current_money = 0;
     edge tmp;
 
-    tmp.cost = INT_MAX;
-
+    tmp = this->root->path[0];
 
     while (remain_time >= 0)
     {
@@ -157,13 +165,14 @@ void graph::greedy_cost(int remain_time)
         {
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
+            current_node = tmp.target;
         }
         else
         {
             break;
         }
     }
-    cout << current_money;
+    cout << current_money << endl;
 }
 
 
@@ -174,8 +183,7 @@ void graph::greedy_money(int remain_time)
     int current_money = 0;
     edge tmp;
 
-    tmp.target->money = INT_MIN;
-
+    tmp = this->root->path[0];
 
     while (remain_time >= 0)
     {
@@ -189,13 +197,14 @@ void graph::greedy_money(int remain_time)
         {
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
+            current_node = tmp.target;
         }
         else
         {
             break;
         }
     }
-    cout << current_money;
+    cout << current_money << endl;
 }
 
 
@@ -206,8 +215,7 @@ void graph::greedy_cp(int remain_time)
     int current_money = 0;
     edge tmp;
 
-    tmp.target->money = 0;
-    tmp.cost = 1;
+    tmp = this->root->path[0];
 
 
     while (remain_time >= 0)
@@ -222,11 +230,12 @@ void graph::greedy_cp(int remain_time)
         {
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
+            current_node = tmp.target;
         }
         else
         {
             break;
         }
     }
-    cout << current_money;
+    cout << current_money << endl;
 }

@@ -75,17 +75,17 @@ public:
     }
 
 
-    void brute(int remain_time);
+    int brute(int remain_time);
     void brute(int remain_time, int current_money, Node* current_node);
 
 
-    void greedy_cost(int remain_time);
+    int greedy_cost(int remain_time);
 
 
-    void greedy_money(int remain_time);
+    int greedy_money(int remain_time);
 
 
-    void greedy_cp(int remain_time);
+    int greedy_cp(int remain_time);
 
 
     void reset();
@@ -93,17 +93,19 @@ public:
 
 
 
-void graph::brute(int remain_time)
+int graph::brute(int remain_time)
 {
     int tmp = -1;
+
     brute(remain_time, 0, this->root);
 
     for (int i : this->ans)
         if (i > tmp) tmp = i;
 
-    cout << tmp << endl;
-
+    int x = tmp;
     reset();
+    return x;
+
 }
 
 void graph::brute(int remain_time, int current_money, Node* current_node)
@@ -114,6 +116,7 @@ void graph::brute(int remain_time, int current_money, Node* current_node)
             current_money -= current_node->money;
 
         this->ans.push_back(current_money);
+        current_node->used = false;
         return;
     }
 
@@ -130,8 +133,9 @@ void graph::brute(int remain_time, int current_money, Node* current_node)
 
 
 
-void graph::greedy_cost(int remain_time)
+int graph::greedy_cost(int remain_time)
 {
+    int used_cnt = 0;
     Node* current_node = this->root;
     int current_money = 0;
     edge tmp;
@@ -140,7 +144,20 @@ void graph::greedy_cost(int remain_time)
 
     while (remain_time >= 0)
     {
-        tmp = current_node->path[0];
+        if (used_cnt >= this->root->path.size())
+        {
+            break;
+        }
+
+        for (edge i : this->root->path)
+        {
+            if (i.target->used == false && i.target != current_node)
+            {
+                tmp = i;
+                break;
+            }
+        }
+        //tmp = current_node->path[0];
        
 
         for (edge i : current_node->path)
@@ -155,19 +172,24 @@ void graph::greedy_cost(int remain_time)
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
             current_node = tmp.target;
+            used_cnt++;
         }
         else
         {
             break;
         }
+
+        
     }
-    cout << current_money << endl;
+   // cout << current_money << endl;//
+    int x = current_money;//
     reset();
+    return x;//
 }
 
 
 
-void graph::greedy_money(int remain_time)
+int graph::greedy_money(int remain_time)
 {
     Node* current_node = this->root;
     int current_money = 0;
@@ -177,7 +199,15 @@ void graph::greedy_money(int remain_time)
 
     while (remain_time >= 0)
     {
-        tmp = current_node->path[0];
+        for (edge i : current_node->path)
+        {
+            if (i.target->used == false)
+            {
+                tmp = i;
+                break;
+            }
+        }
+        //tmp = current_node->path[0];
 
 
         for (edge i : current_node->path)
@@ -198,13 +228,15 @@ void graph::greedy_money(int remain_time)
             break;
         }
     }
-    cout << current_money << endl;
+    //cout << current_money << endl;//
+    int x = current_money;//
     reset();
+    return x;//
 }
 
 
 
-void graph::greedy_cp(int remain_time)
+int graph::greedy_cp(int remain_time)
 {
     Node* current_node = this->root;
     int current_money = 0;
@@ -215,7 +247,15 @@ void graph::greedy_cp(int remain_time)
 
     while (remain_time >= 0)
     {
-        tmp = current_node->path[0];
+        for (edge i : current_node->path)
+        {
+            if (i.target->used == false)
+            {
+                tmp = i;
+                break;
+            }
+        }
+        //tmp = current_node->path[0];
 
 
         for (edge i : current_node->path)
@@ -236,8 +276,10 @@ void graph::greedy_cp(int remain_time)
             break;
         }
     }
-    cout << current_money << endl;
+    //cout << current_money << endl;//
+    int x = current_money;//
     reset();
+    return x;//
 }
 
 

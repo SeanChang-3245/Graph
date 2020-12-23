@@ -6,32 +6,45 @@ int main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 
-	srand(time(NULL));
 
-	//----test start----
-	int num[4];
-	for (int i = 0; i < 4; i++)
+	for (int x = 0; x < 1000; x++)
 	{
-		num[i] = rand() % 100 + 1;
+		srand(time(NULL) + x);
+
+		int num[4];
+		for (int i = 0; i < 4; i++)
+		{
+			num[i] = rand() % 10 + 1;
+		}
+
+
+		vector<int> vec(num, num + 4);
+		graph G(vec);
+
+		int a = G.brute(15);
+		int b = G.greedy_cost(15);
+		int c = G.greedy_cp(15);
+		int d = G.greedy_money(15);
+
+		if (a >= b)
+			cout << x+1 << ": " << "true" << endl;
+		else
+			cout << x + 1 << ": " << "false" << endl;
+
+
+		
 	}
 
 
-	vector<int> vec(num, num+4);
-	graph G(vec);
 
-	/*for (int i = 0; i < 4; i++)
-	{
-		cout << G.root->path[i].target->money << endl;
-	}*/
-
-	G.brute(15);
+	/*G.brute(15);
 	G.greedy_cost(15);
 	G.greedy_cp(15);
 	G.greedy_money(15);
+	cout << endl << endl;*/
+	
 
 
-
-	//----test end----
 
 
 

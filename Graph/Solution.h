@@ -37,11 +37,13 @@ public:
     Node* root = new Node(0);
     vector<int> ans;
 
-    graph(vector<int> &nodes_money)
+    graph(vector<int> &nodes_money, int randseed)
     {
-        srand(time(NULL));
+        srand(time(NULL) + randseed);
         int rcost = rand() % 10 + 1;
         Node* p = nullptr;
+        this->ans.clear();
+
 
 
         for (int i : nodes_money)
@@ -76,7 +78,7 @@ public:
 
 
     int brute(int remain_time);
-    void brute(int remain_time, int current_money, Node* current_node);
+    void brute(int remain_time, int current_money, Node* current_node, int lvl);
 
 
     int greedy_cost(int remain_time);
@@ -95,28 +97,26 @@ public:
 
 int graph::brute(int remain_time)
 {
-    int tmp = -1;
+    int tmp = INT_MIN;
 
-    brute(remain_time, 0, this->root);
+    brute(remain_time, 0, this->root, 0);
 
     for (int i : this->ans)
         if (i > tmp) tmp = i;
 
-    int x = tmp;
     reset();
-    return x;
+    return tmp;
 
 }
 
-void graph::brute(int remain_time, int current_money, Node* current_node)
+void graph::brute(int remain_time, int current_money, Node* current_node, int lvl)
 {
-    if (remain_time <= 0)
+    if (remain_time <= 0 || lvl >= this->root->path.size())
     {
         if (remain_time < 0)
             current_money -= current_node->money;
 
         this->ans.push_back(current_money);
-        current_node->used = false;
         return;
     }
 
@@ -125,7 +125,7 @@ void graph::brute(int remain_time, int current_money, Node* current_node)
         if (i.target->used == false)
         {
             i.target->used = true;
-            brute(remain_time - i.cost, current_money + i.target->money, i.target);
+            brute(remain_time - i.cost, current_money + i.target->money, i.target, lvl+1);
             i.target->used = false;
         }
     }
@@ -149,9 +149,9 @@ int graph::greedy_cost(int remain_time)
             break;
         }
 
-        for (edge i : this->root->path)
+        for (edge i : current_node->path)
         {
-            if (i.target->used == false && i.target != current_node)
+            if (i.target->used == false)
             {
                 tmp = i;
                 break;
@@ -181,16 +181,16 @@ int graph::greedy_cost(int remain_time)
 
         
     }
-   // cout << current_money << endl;//
-    int x = current_money;//
+   // cout << current_money << endl;
     reset();
-    return x;//
+    return current_money;
 }
 
 
 
 int graph::greedy_money(int remain_time)
 {
+    int used_cnt = 0;
     Node* current_node = this->root;
     int current_money = 0;
     edge tmp;
@@ -199,6 +199,11 @@ int graph::greedy_money(int remain_time)
 
     while (remain_time >= 0)
     {
+        if (used_cnt >= this->root->path.size())
+        {
+            break;
+        }
+
         for (edge i : current_node->path)
         {
             if (i.target->used == false)
@@ -207,7 +212,6 @@ int graph::greedy_money(int remain_time)
                 break;
             }
         }
-        //tmp = current_node->path[0];
 
 
         for (edge i : current_node->path)
@@ -222,22 +226,23 @@ int graph::greedy_money(int remain_time)
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
             current_node = tmp.target;
+            used_cnt++;
         }
         else
         {
             break;
         }
     }
-    //cout << current_money << endl;//
-    int x = current_money;//
+
     reset();
-    return x;//
+    return current_money;
 }
 
 
 
 int graph::greedy_cp(int remain_time)
 {
+    int used_cnt = 0;
     Node* current_node = this->root;
     int current_money = 0;
     edge tmp;
@@ -247,6 +252,11 @@ int graph::greedy_cp(int remain_time)
 
     while (remain_time >= 0)
     {
+        if(used_cnt >= this->root->path.size())
+        {
+            break;
+        }
+
         for (edge i : current_node->path)
         {
             if (i.target->used == false)
@@ -270,16 +280,16 @@ int graph::greedy_cp(int remain_time)
             remain_time -= tmp.cost;
             current_money += tmp.target->money;
             current_node = tmp.target;
+            used_cnt++;
         }
         else
         {
             break;
         }
     }
-    //cout << current_money << endl;//
-    int x = current_money;//
+    //cout << current_money << endl;
     reset();
-    return x;//
+    return current_money;
 }
 
 

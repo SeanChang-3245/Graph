@@ -84,11 +84,12 @@ int main()
 	G.greedy_money(15);
 	cout << endl << endl;*/
 	
-	for (int x = 0; x < 500; x++)
+	for (int x = 0; x < 500; x++) //　測資數
 	{
 		vector<int> ans(4); //4種作法
 		srand(time(NULL) + x);
-		int k = rand() % 7 + 4;  // k = 4 ~ 10 = 攤位數
+		int k = rand() % 9 + 4;  // k = 4 ~ 10 = 攤位數
+		k = 11;
 
 		vector<int> nodes(k);
 		for (int i = 0; i < k; i++) // random 滿足度

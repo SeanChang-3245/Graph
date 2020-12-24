@@ -269,7 +269,8 @@ int graph::greedy_cp(int remain_time)
 
         for (edge i : current_node->path)
         {
-            if ((double)i.target->money / i.cost > (double)tmp.target->money / tmp.cost && i.target->used == false && remain_time - i.cost >= 0)
+            if ((double)i.target->money / i.cost > (double)tmp.target->money / tmp.cost && 
+                i.target->used == false && remain_time - i.cost >= 0)
                 tmp = i;
         }
 

@@ -45,7 +45,6 @@ public:
         this->ans.clear();
 
 
-
         for (int i : nodes_money)
         {
             p = new Node(i);

@@ -2,20 +2,20 @@
 #include <iostream>
 #include <windows.h>
 
-int main()
+int main()     
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 
 	cout << "stand,brute,cost,money,cp" << endl;
 
-	
-	for (int x = 0; x < 9500; x++) //　測資數
+
+	for (int x = 0; x < 1; x++) //　測資數
 	{
 		vector<int> ans(4); //4種作法
 		srand(time(NULL) + x);
 		int k = rand() % 7 + 4;  // k = 4 ~ 10 = 攤位數
-		k = 11;
+		
 
 		vector<int> nodes(k);
 		for (int i = 0; i < k; i++) // random 滿足度
@@ -34,23 +34,18 @@ int main()
 		ans[2] = G.greedy_money(k * 4 + rand_neg * (time % k));
 		ans[3] = G.greedy_cp(k * 4 + rand_neg * (time % k));
 
-
-		/*cout << "stand: " << k << endl;
-		cout << "brute: " << ans[0] << endl;
-		cout << "cost: " << ans[1] << endl;
-		cout << "money: " << ans[2] << endl;
-		cout << "cp: " << ans[3] << endl;
 		
-		cout << endl << endl;*/
 
 		cout << k << ',' << ans[0] << ',' << ans[1] << ',' << ans[2] << ',' << ans[3] << "   ";
 
-		if (ans[0] < ans[1] || ans[0] < ans[2] || ans[0] < ans[3]) cout << "false";
-		cout << endl;
+		
 		Sleep(5);
 
 
 	}
+	
+	cout << fixed << setprecision(4) << (double)clock() * 100 / CLOCKS_PER_SEC;
+
 }
 
 //for (int x = 0; x < 500000; x++)
@@ -127,3 +122,5 @@ int main()
 	G.greedy_money(15);
 	cout << endl << endl;*/
 
+
+	

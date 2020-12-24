@@ -10,12 +10,12 @@ int main()
 	cout << "stand,brute,cost,money,cp" << endl;
 
 	
-	for (int x = 0; x < 10000; x++) //　測資數
+	for (int x = 0; x < 9500; x++) //　測資數
 	{
 		vector<int> ans(4); //4種作法
 		srand(time(NULL) + x);
 		int k = rand() % 7 + 4;  // k = 4 ~ 10 = 攤位數
-		
+		k = 11;
 
 		vector<int> nodes(k);
 		for (int i = 0; i < k; i++) // random 滿足度

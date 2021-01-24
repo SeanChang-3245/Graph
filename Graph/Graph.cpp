@@ -10,7 +10,7 @@ int main()
 	cout << "stand,brute,cost,money,cp" << endl;
 
 
-	for (int x = 0; x < 1; x++) //　測資數
+	for (int x = 0; x < 10000; x++) //　測資數
 	{
 		vector<int> ans(4); //4種作法
 		srand(time(NULL) + x);
@@ -21,22 +21,26 @@ int main()
 		for (int i = 0; i < k; i++) // random 滿足度
 		{
 			nodes[i] = rand() % 100 + 1;
+			Sleep(5);
 		} 
 
 		graph G(nodes, rand() + 1);
 
 		int rand_neg = 1;
-		if (rand() & 1) rand_neg = -1;
+		
+		if (rand() & 1) 
+			rand_neg = -1;
 
 		int time = rand();
-		ans[0] = G.brute(k * 4 + rand_neg * (time % k));
-		ans[1] = G.greedy_cost(k * 4 + rand_neg * (time % k));
-		ans[2] = G.greedy_money(k * 4 + rand_neg * (time % k));
-		ans[3] = G.greedy_cp(k * 4 + rand_neg * (time % k));
+		int t = k * 4 + rand_neg * (time % k);
+		ans[0] = G.brute(t);
+		ans[1] = G.greedy_cost(t);
+		ans[2] = G.greedy_money(t);
+		ans[3] = G.greedy_cp(t);
 
 		
 
-		cout << k << ',' << ans[0] << ',' << ans[1] << ',' << ans[2] << ',' << ans[3] << "   ";
+		cout << k << ',' << ans[0] << ',' << ans[1] << ',' << ans[2] << ',' << ans[3] << "   " << endl;
 
 		
 		Sleep(5);
@@ -44,8 +48,7 @@ int main()
 
 	}
 	
-	cout << fixed << setprecision(4) << (double)clock() * 100 / CLOCKS_PER_SEC;
-
+	return 0;
 }
 
 
